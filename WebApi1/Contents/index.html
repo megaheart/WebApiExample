@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+        :root {
+            --color-background: #dbedf1;
+            --color-blue-text: #0333d3;
+            --color-red-text: #ff0040;
+            --color-text: #1d1d1d;
+            --color-green-line: #3eb63c;
+            --color-blue-line: #3da0b4;
+            --color-button: #1365f4;
+            --color-button-hover: #186dff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #fff;
+            font-size: 14px;
+            color: var(--color-text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        #main {
+            margin: 30px auto 0 auto;
+            width: 500px;
+        }
+
+        .displayer-name {
+            font-size: 24px;
+            font-weight: normal;
+            color: rgb(44, 44, 44);
+            text-align: center;
+        }
+
+        .displayer {
+            font-size: 40px;
+            font-weight: lighter;
+            color: rgb(44, 44, 44);
+            text-align: center;
+            margin: 15px 0 15px 0;
+        }
+
+        #main > table {
+            width: 500px;
+        }
+
+            #main > table > tr > td {
+                width: 250px;
+            }
+
+        .button-name {
+            font-size: 20px;
+            font-weight: normal;
+            color: rgb(44, 44, 44);
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 100px;
+            height: 60px;
+            margin: 10px 73px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 5px;
+            background-color: rgb(255, 255, 255);
+            -webkit-transition: .4s;
+            transition: .4s;
+            box-shadow: 0 2px 3px rgb(48, 48, 48);
+            font-size: 40px;
+            padding: 5px 0;
+            text-align: center;
+        }
+
+            .slider:before {
+                content: "power_settings_new";
+                font-family: "Material Icons";
+                -webkit-transition: .02s;
+                transition: .02s;
+                color: gray;
+            }
+
+        input:checked + .slider {
+            box-shadow: 0 0 2px rgb(12, 98, 211);
+        }
+
+            input:checked + .slider:before {
+                color: #1a85dd;
+            }
+    </style>
+</head>
+
+<body>
+
+    <div id="main">
+        <h2 class="displayer-name">Nhiệt độ</h2>
+        <p id="temperature-displayer" class="displayer">35 oC</p>
+        <h2 class="displayer-name">Độ ẩm</h2>
+        <p id="humidity-displayer" class="displayer">12 %</p>
+        <table>
+            <tr>
+                <td>
+                    <h3 class="button-name">Đèn 1</h3>
+                    <label id="light1-btn" class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+                <td>
+                    <h3 class="button-name">Đèn 2</h3>
+                    <label id="light2-btn" class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h3 class="button-name">Quạt 1</h3>
+                    <label id="fan1-btn" class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+                <td>
+                    <h3 class="button-name">Động cơ 1</h3>
+                    <label id="engine1-btn" class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        let temperatureDisplayer = document.querySelector("#temperature-displayer");
+        let humidityDisplayer = document.querySelector("#temperatureDisplayer");
+        let light1Btn = document.querySelector("#light1-btn>input");
+        let light2Btn = document.querySelector("#light2-btn>input");
+        let engine1Btn = document.querySelector("#engine1-btn>input");
+        let fan1Btn = document.querySelector("#fan1-btn>input");
+
+        light1Btn.addEventListener("click", function(){
+            if(light1Btn.checked){
+
+                console.log("Light 1 On");
+            }else{
+
+                console.log("Light 1 Off");
+            }
+        });
+        light2Btn.addEventListener("click", function(){
+            if(light2Btn.checked){
+
+                console.log("Light 2 On");
+            }else{
+
+                console.log("Light 2 Off");
+            }
+        });
+        engine1Btn.addEventListener("click", function(){
+            if(engine1Btn.checked){
+
+                console.log("Engine 1 On");
+            }else{
+
+                console.log("Engine 1 Off");
+            }
+        });
+        fan1Btn.addEventListener("click", function(){
+            if(fan1Btn.checked){
+
+                console.log("Fan 1 On");
+            }else{
+
+                console.log("Fan 1 Off");
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
