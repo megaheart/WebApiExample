@@ -120,9 +120,9 @@
 
     <div id="main">
         <h2 class="displayer-name">Nhiệt độ</h2>
-        <p id="temperature-displayer" class="displayer">35 oC</p>
+        <p id="temperature-displayer" class="displayer">Unknown</p>
         <h2 class="displayer-name">Độ ẩm</h2>
-        <p id="humidity-displayer" class="displayer">12 %</p>
+        <p id="humidity-displayer" class="displayer">Unknown</p>
         <table>
             <tr>
                 <td>
@@ -160,48 +160,153 @@
     </div>
     <script>
         let temperatureDisplayer = document.querySelector("#temperature-displayer");
-        let humidityDisplayer = document.querySelector("#temperatureDisplayer");
+        let humidityDisplayer = document.querySelector("#humidity-displayer");
         let light1Btn = document.querySelector("#light1-btn>input");
         let light2Btn = document.querySelector("#light2-btn>input");
         let engine1Btn = document.querySelector("#engine1-btn>input");
         let fan1Btn = document.querySelector("#fan1-btn>input");
 
-        light1Btn.addEventListener("click", function(){
-            if(light1Btn.checked){
+        let devices = {
+            "light1": {
+                button: light1Btn
+            },
+            "light2": {
+                button: light2Btn
+            },
+            "engine1": {
+                button: engine1Btn
+            },
+            "fan1": {
+                button: fan1Btn
+            },
+        }
+        //Initialize
+        async function Initialize() {
+            var devicesState = await fetch("/api/remote/currentstates");
+            devicesState = await devicesState.json();
 
-                console.log("Light 1 On");
-            }else{
-
-                console.log("Light 1 Off");
-            }
-        });
-        light2Btn.addEventListener("click", function(){
-            if(light2Btn.checked){
-
-                console.log("Light 2 On");
-            }else{
-
-                console.log("Light 2 Off");
-            }
-        });
-        engine1Btn.addEventListener("click", function(){
-            if(engine1Btn.checked){
-
-                console.log("Engine 1 On");
-            }else{
-
-                console.log("Engine 1 Off");
-            }
-        });
-        fan1Btn.addEventListener("click", function(){
-            if(fan1Btn.checked){
-
-                console.log("Fan 1 On");
-            }else{
-
-                console.log("Fan 1 Off");
-            }
-        });
+            Object.keys(devicesState).forEach(function (e) {
+                devices[e].button.checked = devicesState[e];
+            });
+            light1Btn.addEventListener("click", async function () {
+                let response = await fetch("api/remote/change", {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify({ light1: light1Btn.checked })
+                });
+                let result = await response.json();
+                if (result["light1"] === "changed") {
+                    if (light1Btn.checked) {
+                        console.log("Light 1 On");
+                    } else {
+                        console.log("Light 1 Off");
+                    }
+                }
+                else {
+                    console.log("Light 1 is not synchronized");
+                }
+            });
+            light2Btn.addEventListener("click", async function () {
+                let response = await fetch("api/remote/change", {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify({ light2: light2Btn.checked })
+                });
+                let result = await response.json();
+                if (result["light2"] === "changed") {
+                    if (light2Btn.checked) {
+                        console.log("Light 2 On");
+                    } else {
+                        console.log("Light 2 Off");
+                    }
+                }
+                else {
+                    console.log("Light 2 is not synchronized");
+                }
+            });
+            engine1Btn.addEventListener("click", async function () {
+                let response = await fetch("api/remote/change", {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify({ engine1: engine1Btn.checked })
+                });
+                let result = await response.json();
+                if (result["engine1"] === "changed") {
+                    if (engine1Btn.checked) {
+                        console.log("engine 1 On");
+                    } else {
+                        console.log("engine 1 Off");
+                    }
+                }
+                else {
+                    console.log("engine 1 is not synchronized");
+                }
+            });
+            fan1Btn.addEventListener("click", async function () {
+                let response = await fetch("api/remote/change", {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    redirect: 'follow',
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify({ fan1: fan1Btn.checked })
+                });
+                let result = await response.json();
+                if (result["fan1"] === "changed") {
+                    if (fan1Btn.checked) {
+                        console.log("fan 1 On");
+                    } else {
+                        console.log("fan 1 Off");
+                    }
+                }
+                else {
+                    console.log("fan 1 is not synchronized");
+                }
+            });
+            //Update info real-time
+            var timer = setInterval(async function () {
+                var humidityNow = await fetch("api/humidity?realtime=true");
+                humidityNow = await humidityNow.json();
+                if (humidityNow.length > 0) {
+                    humidityDisplayer.textContent = humidityNow[0].value + " %";
+                } else {
+                    humidityDisplayer.textContent = "Unknown";
+                }
+                var temperatureNow = await fetch("api/temperature?realtime=true");
+                temperatureNow = await temperatureNow.json();
+                if (temperatureNow.length > 0) {
+                    temperatureDisplayer.textContent = temperatureNow[0].value + " oC";
+                } else {
+                    temperatureDisplayer.textContent = "Unknown";
+                }
+            }, 1000);
+        }
+        Initialize();
     </script>
 
 
