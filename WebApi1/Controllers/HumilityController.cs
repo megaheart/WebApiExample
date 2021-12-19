@@ -19,7 +19,7 @@ namespace WebApi1
             {
                 List<HumidityLog> logs = new List<HumidityLog>();
                 var log = _context.HumidityLogs.OrderBy(e => e.Time).LastOrDefault();
-                if(log == null) { return NotFound(); }
+                if (log == null) { return Ok(logs); }
                 logs.Add(log);
                 return Ok(logs);
             }
